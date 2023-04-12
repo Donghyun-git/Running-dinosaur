@@ -1,7 +1,7 @@
 const canvas = document.querySelector('.canvas');
 const ctx = canvas.getContext('2d');
 
-class User {  //유저 클래서 정의
+class User {  //유저 클래스 정의
     constructor(x, y, isJump, attack, keyStack){
         this.x = x;  //캔버스 x좌표 값
         this.y = y;  //캔버스
@@ -14,19 +14,18 @@ class User {  //유저 클래서 정의
 const user = new User(80, 605, false, false, 2);  // 유저 인스턴스 생성, (초기 x값, 초기 y값, 점프키 누름 여부, 컨트롤키 누름여부, 스페이스바 키 스택 초기값 == 0)
 let spaceCount = 0;
 
-const character = new Image();
-character.src = "../img/user.png";
-character.onload = function () {
+const userImage = new Image();
+userImage.src = "../img/user.png";
+userImage.onload = function () {
   // 이미지가 로드된 후 실행되는 함수
   setUser();
 };
 
 const setUser = () => {
   ctx.clearRect(0, 0, 3000, 3000) // 매 프레임 재귀 돌때마다 캔버스 지움
-  ctx.drawImage(character, user.x, user.y, 100, 200)
+  ctx.drawImage(userImage, user.x, user.y, 150, 200)
 //   ctx.fillStyle = "red";
 //   ctx.fillRect(user.x, user.y, 100, 100); // 용용이 히트박스  
-  
     if (user.isJump === true) {
       // 스페이스바키 눌러서 isjump true일 시 점프함. 매 프레임마다 8 픽셀씩 위로 올라감. 한마디로 점프속도
       user.y -= 8;
@@ -44,17 +43,26 @@ const setUser = () => {
 
 const frameLoop = () => {  //requestAnimationFrame 재귀함수
   setUser(); //용용이 초기세팅.
-  console.log(user.y);
+  if(user.y >= 605 && spaceCount == 2){
+    spaceCount = 0;
+  }
+  console.log(user.y)
   requestAnimationFrame(frameLoop); // 프레임 재귀
 };
 
-document.addEventListener("keydown", (e) => {
-  if (e.code === "Space") { 
-    e.preventDefault(); 
-    user.isJump = true; // 스페이스바 키 누르면 용용이 isJump true
-    spaceCount++; // 스페이스바 키 누를때마다 용용이 키스택 증가
-  }
-});
+
+    document.addEventListener("keydown", (e) => {
+     if (e.code === "Space") {
+       e.preventDefault();
+       if (!user.isJump && spaceCount < user.keyStack) {
+         user.isJump = true; // 스페이스바 키 누르면 용용이 isJump true
+         spaceCount++; // 스페이스바 키 누를때마다 용용이 키스택 증가
+         console.log(spaceCount);
+       }
+     }
+   });
+
+
 
 
 
