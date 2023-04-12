@@ -1,0 +1,13 @@
+@import "./default.css";
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+
+
+#wrap { width: 100%;}
+#intro { width: 80%; margin: 0 auto;  height: 100vh;}
+#intro .intro-title h1 { text-align: center; font-family: 'Press Start 2P', cursive; padding: 36px 0; letter-spacing: 2.5px;}
+
+.intro-main { display: flex; justify-content: center; align-items: center; flex-wrap: nowrap;}
+.intro-main img { width: 50%;}
+.intro-main-button { display: flex; justify-content: center; align-items: center; flex-direction: column; width:50%;}
+.intro-main button { display: inline-block;  border-radius: 18px; padding: 20px 16px; margin: 4px; width: 300px; background-color: burlywood; box-shadow: 4px 4px 1px brown; font-family: 'Press Start 2P', cursive; font-weight: 500; color: #fff;}
