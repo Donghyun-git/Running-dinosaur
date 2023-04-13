@@ -18,32 +18,31 @@ class Fire extends User {
     this.keyStack = keyStack;
     this.fx = fx;
     this.isConflict = isConflict;
-  }
-  
-}
+  };
+};
 
 class SmallBlock {  //작은 장애물 
   constructor(x, y){
     this.x = x;
     this.y = y;
-  }
-}
+  };
+};
+
 
 const user = new User(80, 605, false, false, 2);  // 유저 인스턴스 생성, (초기 x값, 초기 y값, 점프키 누름 여부, 컨트롤키 누름여부, 스페이스바 키 스택 초기값 == 0)
-const blocks = new SmallBlock(100, 100);
 const attackList = [];
 const blocksList = [];
 
+const getRadian = (d) => {
+  return (d * 180) / Math.PI;
+};
+
 const userImage = new Image();
 userImage.src = "../img/user.png";
-userImage.onload = function () {
+userImage.onload = () => {
   // 이미지가 로드된 후 실행되는 함수
   setUser();
 };
-
-const getRadian = (d) => {
-  return d * 180 / Math.PI;
-}
 
 const setUser = () => {
   ctx.clearRect(0, 0, 3000, 3000) // 매 프레임 재귀 돌때마다 캔버스 지움
@@ -65,24 +64,12 @@ const setUser = () => {
   }
 }
 
-
-
- 
-document.addEventListener("keydown", (e) => {
-  if (e.ctrlKey) {
-    const fire = new Fire(80, user.y, false, false, 0, 210, false);
-    attackList.push(fire);
-    console.log(attackList);
-  }
-});
-
 const fireBall = new Image();
 fireBall.src = '../img/fireball.png';
-fireBall.onload = function () {
+fireBall.onload = () => {
   // 이미지가 로드된 후 실행되는 함수
   setAttack();
 };
-
 
 const setAttack = () => {
   ctx.fillStyle = "red";
@@ -95,21 +82,37 @@ const setAttack = () => {
   })
 }
 
+const setBlocks = () => {
+  blocksList.forEach(block => {
+    ctx.fillStyle = "red";
+    ctx.fillRect(block.x, block.y, 80, 130);
+    block.x -= 4;
+  });
+}
 
+let frameCount = 0;
 let spaceCount = 0;
 
 const frameLoop = () => {  //requestAnimationFrame 재귀함수
   setUser(); //용용이 초기세팅.
   setAttack();
+
   if(user.y >= 605 && spaceCount == 2){
     spaceCount = 0;
   }
+  if(frameCount % 300 === 0){
+    const blocks = new SmallBlock(1010, 700);
+    blocksList.push(blocks);
+  }
+  setBlocks();
+
+  frameCount++;
   requestAnimationFrame(frameLoop); // 프레임 재귀
 };
 
 
 
-
+ 
 //스페이스키
     document.addEventListener("keydown", (e) => {
      if (e.code === "Space") {
@@ -122,31 +125,14 @@ const frameLoop = () => {  //requestAnimationFrame 재귀함수
      }
    });
 
-//컨트롤키
-  
-
-  //  document.addEventListener('keyup', (e)=>{
-  //   if(!e.ctrlKey) {
-  //     fire.isAttack = false;
-  //   }
-  //  })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//컨트롤 키
+document.addEventListener("keydown", (e) => {
+  if (e.ctrlKey) {
+    const fire = new Fire(80, user.y, false, false, 0, 210, false);
+    attackList.push(fire);
+    console.log(attackList);
+  }
+});
 
 
 canvas.addEventListener("click", (e) => {
