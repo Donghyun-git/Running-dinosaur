@@ -28,10 +28,19 @@ class SmallBlock {  //작은 장애물
   };
 };
 
+class BigBlock {
+  constructor(x, y, hp){
+    this.x = x;
+    this.y = y;
+    this.hp = hp;
+  }
+}
+
 
 const user = new User(80, 605, false, false, 2);  // 유저 인스턴스 생성, (초기 x값, 초기 y값, 점프키 누름 여부, 컨트롤키 누름여부, 스페이스바 키 스택 초기값 == 0)
 const attackList = [];
-const blocksList = [];
+const smallBlocksList = [];
+const bigBlocksList = [];
 
 const getRadian = (d) => {
   return (d * 180) / Math.PI;
@@ -83,14 +92,22 @@ const setAttack = () => {
 }
 
 const setBlocks = () => {
-  blocksList.forEach(block => {
+  smallBlocksList.forEach(block => {
     ctx.fillStyle = "red";
     ctx.fillRect(block.x, block.y, 80, 130);
     block.x -= 4;
   });
 }
 
-let frameCount = 0;
+const setBigBlocks = () => {
+  bigBlocksList.forEach(block => {
+    ctx.fillStyle = "blue";
+    ctx.fillRect(block.x, block.y, 300, 450);
+    block.x -= 0.3;
+  })
+}
+
+let frameCount = 1;
 let spaceCount = 0;
 
 const frameLoop = () => {  //requestAnimationFrame 재귀함수
@@ -101,10 +118,16 @@ const frameLoop = () => {  //requestAnimationFrame 재귀함수
     spaceCount = 0;
   }
   if(frameCount % 300 === 0){
-    const blocks = new SmallBlock(1010, 700);
-    blocksList.push(blocks);
+    const blocks = new SmallBlock(1200, 700);
+    smallBlocksList.push(blocks);
+  }
+
+  if(frameCount % 2000 === 0) {
+    const blocks = new BigBlock(1200, 350, 2000);
+    bigBlocksList.push(blocks);
   }
   setBlocks();
+  setBigBlocks();
 
   frameCount++;
   requestAnimationFrame(frameLoop); // 프레임 재귀
