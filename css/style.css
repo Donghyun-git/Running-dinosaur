@@ -1,8 +1,6 @@
 @import "./default.css";
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-
-
 #wrap { width: 100%; background-color: antiquewhite;}
 #intro, #game { width: 80%; margin: 0 auto;  height: 100vh; background-color: aliceblue;}
 
