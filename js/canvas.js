@@ -70,10 +70,12 @@ const setUser = () => {
     if(frameCount % 2 === 0){
       ctx.clearRect(user.x,user.y,150,200);
       ctx.drawImage(user2, user.x, user.y, 150, 200);
+
     }
     else if(frameCount % 3 === 0){
       ctx.clearRect(user.x, user.y, 150, 200);
       ctx.drawImage(user3, user.x, user.y, 150, 200);
+
     }
     if (user.isJump === true) {
       user.y -= 8;
@@ -152,8 +154,8 @@ let spaceCount = 0;
 
 const frameLoop = () => {  
   ctx.clearRect(0, 0, 3000, 3000); 
-  setBigBlocks();
   setBlocks();
+  setBigBlocks();
   setUser(); 
   setAttack();
   

@@ -9,7 +9,7 @@ const changeTogamePage = () => {
     game.style.display = "block";
     canvas.classList.add('on');
     if (canvas.classList.contains("on")) {
-      frameLoop(); //이거 canvas.js에서 frameLoop << (requestAnimationframe 재귀함수) 함수 전역 선언해놔서 가져올수 있는거양 
+      frameLoop(); 
     }
 }
 
