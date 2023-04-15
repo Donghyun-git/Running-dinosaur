@@ -212,7 +212,7 @@ const frameLoop = () => {
 
   if(bigBlocksList.length > 0 && bigBlocksList[0].hp <= 0){
 
-    bigBlocksList.pop();
+    bigBlocksList.shift();
   }
 
   if (user.y >= 600 && spaceCount == 2) {
@@ -224,7 +224,7 @@ const frameLoop = () => {
     smallBlocksList.push(blocks);
   }
 
-  if(frameCount % 5000 === 0) {
+  if(frameCount % 600 === 0) {
     const blocks = new BigBlock(1200, 350, 2000);
     bigBlocksList.push(blocks);
   }
