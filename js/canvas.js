@@ -36,7 +36,7 @@ class BigBlock {
   }
 }
 
-let frameCount = 1;
+let frameCount = 4500;
 
 const user = new User(80, 600, false, false, 2);  
 const attackList = [];
@@ -97,7 +97,7 @@ const setAttack = () => {
   attackList.forEach(item => {
     ctx.beginPath();
     ctx.drawImage(fireBall, item.fx, item.y + 56, 100, 50);
-    item.fx += 20;
+    item.fx += 5;
   })
 }
 
@@ -125,9 +125,28 @@ const setBigBlocks = () => {
   bigBlocksList.forEach(block => {
     ctx.drawImage(bigmushRoom, block.x, block.y - 30, 300, 450);
     block.x -= 0.3;
-    console.log(block.x);
   })
 }
+
+const isCrash = ({ userX, userY }, { name, itemX, itemY } ) => {
+  if(name === "small_obstacle"){
+    return userX + 120 >= itemX && itemX >= 80 && userY + 200 >= itemY
+      ? true
+      : false;
+  } else if(name === "big_obstacle"){
+    return userX + 120 >= itemX && itemX >= 80 && userY + 200 >= itemY
+      ? true
+      : false;
+  }
+}
+
+const isAttack = (attackObj, big_obstacleObj) => {
+  const attack = attackObj.itemX;
+  const obstacle = big_obstacleObj.itemX;
+
+  return attack >= obstacle ? true : false; 
+}
+
 
 let spaceCount = 0;
 
@@ -137,20 +156,76 @@ const frameLoop = () => {
   setBlocks();
   setUser(); 
   setAttack();
-
-  if(user.y >= 600 && spaceCount == 2){
-    spaceCount = 0;
+  
+  const user_coordinates = {
+    userX: user.x,
+    userY: user.y
   }
+
+  const big_obstacle_coordinates = {
+    name: "big_obstacle",
+    itemX: bigBlocksList[0]?.x || 0,
+    itemY: bigBlocksList[0]?.y || 0,
+  };
+
+  if (smallBlocksList.length > 0) {
+    
+    const small_obstacle_coordinates = {
+      name: "small_obstacle",
+      itemX: smallBlocksList[0].x,
+      itemY: smallBlocksList[0].y,
+    };
+
+    if(isCrash(user_coordinates, small_obstacle_coordinates)){
+      cancelAnimationFrame(requestAnimationFrame(frameLoop));
+      return;
+    }
+
+    if(smallBlocksList[0].x <= 0) {
+       smallBlocksList.pop();
+    }
+  }
+
+  if (bigBlocksList.length > 0) {
+    for (let i = 0; i < attackList.length; i++) {
+      const fireball_coordinates = {
+        itemX: attackList[i].fx || 0,
+        itemY: attackList[i].y || 0,
+      };
+      if (isAttack(fireball_coordinates, big_obstacle_coordinates)) {
+        bigBlocksList[0].hp -= 100;
+        attackList.splice(i, 1);
+        break;
+      }
+    }
+  } else if (attackList.length > 0 && attackList[0].fx >= 1510) {
+    attackList.pop();
+  }
+
+    
+  if(isCrash(user_coordinates, big_obstacle_coordinates)){
+    cancelAnimationFrame(requestAnimationFrame(frameLoop));
+    return;
+  }
+
+  if(bigBlocksList.length > 0 && bigBlocksList[0].hp <= 0){
+
+    bigBlocksList.pop();
+  }
+
+  if (user.y >= 600 && spaceCount == 2) {
+      spaceCount = 0;
+  }
+
   if(frameCount % 300 === 0){
     const blocks = new SmallBlock(1200, 700);
     smallBlocksList.push(blocks);
   }
 
   if(frameCount % 5000 === 0) {
-    const blocks = new BigBlock(1200, 350, 2000);
+    const blocks = new BigBlock(1200, 350, 1000);
     bigBlocksList.push(blocks);
   }
-
 
   frameCount++;
   requestAnimationFrame(frameLoop); 
@@ -166,7 +241,6 @@ document.addEventListener("keydown", (e) => {
     if (!user.isJump && spaceCount < user.keyStack) {
       user.isJump = true; 
       spaceCount++; 
-      console.log(spaceCount);
     }
   }
 });
