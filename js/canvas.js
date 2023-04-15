@@ -199,7 +199,7 @@ const frameLoop = () => {
       }
     }
   } else if (attackList.length > 0 && attackList[0].fx >= 1510) {
-    attackList.pop();
+    attackList.shift();
   }
 
     
@@ -223,7 +223,7 @@ const frameLoop = () => {
   }
 
   if(frameCount % 5000 === 0) {
-    const blocks = new BigBlock(1200, 350, 1000);
+    const blocks = new BigBlock(1200, 350, 2000);
     bigBlocksList.push(blocks);
   }
 
