@@ -36,7 +36,7 @@ class BigBlock {
   }
 }
 
-let frameCount = 4500;
+let frameCount = 1;
 
 const user = new User(80, 600, false, false, 2);  
 const attackList = [];
@@ -126,9 +126,32 @@ bigmushRoom.onload = () => {
 const setBigBlocks = () => {
   bigBlocksList.forEach(block => {
     ctx.drawImage(bigmushRoom, block.x, block.y - 30, 300, 450);
+    ctx.fillStyle = "red";
+    ctx.fillRect(block.x, block.y - 80, block.hp, 20);
     block.x -= 0.3;
   })
 }
+
+const getScore = () => {
+  ctx.font = "40px 'Press Start 2P'";
+
+  if(frameCount >= 2000 && frameCount < 5000){
+    ctx.fillStyle = "blue";
+    ctx.fillText(`score:${frameCount} WOW!`, 100, 100);
+  } else if(frameCount >= 5000 && frameCount < 10000) {
+    ctx.fillStyle = "green";
+    ctx.fillText(`score:${frameCount} AWESOME!`, 100, 100);
+  } else if(frameCount >= 10000) {
+    ctx.fillStyle = "red";
+    ctx.fillText(`score:${frameCount} SO GENIOUS!`, 100, 100);
+  } else {
+    ctx.fillStyle = "black";
+    ctx.fillText(`score:${frameCount}`, 100, 100);
+  }
+
+  
+}
+
 
 const isCrash = ({ userX, userY }, { name, itemX, itemY } ) => {
   if(name === "small_obstacle"){
@@ -155,9 +178,11 @@ let spaceCount = 0;
 const frameLoop = () => {  
   ctx.clearRect(0, 0, 3000, 3000); 
   setBlocks();
+  getScore();
   setBigBlocks();
   setUser(); 
   setAttack();
+  
   
   const user_coordinates = {
     userX: user.x,
@@ -195,7 +220,7 @@ const frameLoop = () => {
         itemY: attackList[i].y || 0,
       };
       if (isAttack(fireball_coordinates, big_obstacle_coordinates)) {
-        bigBlocksList[0].hp -= 100;
+        bigBlocksList[0].hp -= 7.5;
         attackList.splice(i, 1);
         break;
       }
@@ -224,8 +249,8 @@ const frameLoop = () => {
     smallBlocksList.push(blocks);
   }
 
-  if(frameCount % 600 === 0) {
-    const blocks = new BigBlock(1200, 350, 2000);
+  if(frameCount % 1200 === 0) {
+    const blocks = new BigBlock(1200, 350, 280);
     bigBlocksList.push(blocks);
   }
 
