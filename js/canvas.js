@@ -1,23 +1,23 @@
-const canvas = document.querySelector('.canvas');
-const ctx = canvas.getContext('2d');
+const canvas = document.querySelector(".canvas");
+const ctx = canvas.getContext("2d");
 
-class User {  
-    constructor(x, y, life, isJump, keyStack){
-        this.x = x;  
-        this.y = y;
-        this.life = life; 
-        this.isJump = isJump; 
-        this.keyStack = keyStack; 
-    }
+class User {
+  constructor(x, y, life, isJump, keyStack) {
+    this.x = x;
+    this.y = y;
+    this.life = life;
+    this.isJump = isJump;
+    this.keyStack = keyStack;
+  }
 
-    getLife() {
-      return this.life;
-    }
+  getLife() {
+    return this.life;
+  }
 
-    setLife() {
-      this.life -= 1;
-    }
-}   
+  setLife() {
+    this.life -= 1;
+  }
+}
 
 class Fire extends User {
   constructor(x, y, isJump, keyStack, fx, isConflict) {
@@ -26,18 +26,18 @@ class Fire extends User {
     this.keyStack = keyStack;
     this.fx = fx;
     this.isConflict = isConflict;
-  };
-};
+  }
+}
 
-class SmallBlock {  
-  constructor(x, y){
+class SmallBlock {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
-  };
-};
+  }
+}
 
 class BigBlock {
-  constructor(x, y, hp){
+  constructor(x, y, hp) {
     this.x = x;
     this.y = y;
     this.hp = hp;
@@ -46,20 +46,17 @@ class BigBlock {
 
 let frameCount = 1;
 
-const user = new User(80, 600, 3, false, 2);  
+const user = new User(80, 600, 3, false, 2);
 const attackList = [];
 const smallBlocksList = [];
 const bigBlocksList = [];
-
-const getRadian = (d) => {
-  return d * (180 / Math.PI);
-};
 
 const user1 = new Image();
 user1.src = "../img/user01.png";
 user1.onload = () => {
   setUser();
 };
+
 const user2 = new Image();
 user2.src = "../img/user02.png";
 user2.onload = () => {
@@ -72,56 +69,51 @@ user3.onload = () => {
   setUser();
 };
 
-
 const setUser = () => {
-    ctx.drawImage(user1, user.x, user.y, 150, 200);
-    if(frameCount % 2 === 0){
-      ctx.clearRect(user.x,user.y,150,200);
-      ctx.drawImage(user2, user.x, user.y, 150, 200);
-
+  ctx.drawImage(user1, user.x, user.y, 150, 200);
+  if (frameCount % 2 === 0) {
+    ctx.clearRect(user.x, user.y, 150, 200);
+    ctx.drawImage(user2, user.x, user.y, 150, 200);
+  } else if (frameCount % 3 === 0) {
+    ctx.clearRect(user.x, user.y, 150, 200);
+    ctx.drawImage(user3, user.x, user.y, 150, 200);
+  }
+  if (user.isJump === true) {
+    user.y -= 8;
+    if (user.y <= 300) {
+      user.isJump = false;
     }
-    else if(frameCount % 3 === 0){
-      ctx.clearRect(user.x, user.y, 150, 200);
-      ctx.drawImage(user3, user.x, user.y, 150, 200);
+  }
 
-    }
-    if (user.isJump === true) {
-      user.y -= 8;
-      if (user.y <= 300) {
-        user.isJump = false;
-      }
-    }
-
-  if(user.y < 600 && user.isJump === false){ 
-    user.y += 8; 
+  if (user.y < 600 && user.isJump === false) {
+    user.y += 8;
   }
 };
 
 const showLife = () => {
   let currentLife = user.getLife();
   let heart = "";
-  for(let i=1; i<=currentLife; i++){
+  for (let i = 1; i <= currentLife; i++) {
     heart += "❤︎";
-  };
+  }
   ctx.font = "36px 'Press Start 2P'";
   ctx.fillStyle = "red";
   ctx.fillText(heart, 100, 200);
-}
+};
 
 const fireBall = new Image();
-fireBall.src = '../img/fireball.png';
+fireBall.src = "../img/fireball.png";
 fireBall.onload = () => {
   setAttack();
 };
 
 const setAttack = () => {
-  attackList.forEach(item => {
+  attackList.forEach((item) => {
     ctx.beginPath();
     ctx.drawImage(fireBall, item.fx, item.y + 56, 100, 50);
     item.fx += 5;
-  })
-}
-
+  });
+};
 
 const mushRoom = new Image();
 mushRoom.src = "../img/mushroom.png";
@@ -130,11 +122,11 @@ mushRoom.onload = () => {
 };
 
 const setBlocks = () => {
-  smallBlocksList.forEach(block => {
+  smallBlocksList.forEach((block) => {
     ctx.drawImage(mushRoom, block.x, block.y - 30, 80, 130);
     block.x -= 4;
   });
-}
+};
 
 const bigmushRoom = new Image();
 bigmushRoom.src = "../img/bigmushroom.png";
@@ -143,68 +135,66 @@ bigmushRoom.onload = () => {
 };
 
 const setBigBlocks = () => {
-  bigBlocksList.forEach(block => {
+  bigBlocksList.forEach((block) => {
     ctx.drawImage(bigmushRoom, block.x, block.y - 30, 300, 450);
     ctx.fillStyle = "red";
     ctx.fillRect(block.x, block.y - 80, block.hp, 20);
     block.x -= 0.3;
-  })
-}
+  });
+};
 
 const getScore = () => {
   ctx.font = "40px 'Press Start 2P'";
 
-  if(frameCount >= 2000 && frameCount < 5000){
+  if (frameCount >= 2000 && frameCount < 5000) {
     ctx.fillStyle = "blue";
     ctx.fillText(`score:${frameCount} WOW!`, 100, 100);
-  } else if(frameCount >= 5000 && frameCount < 10000) {
+  } else if (frameCount >= 5000 && frameCount < 10000) {
     ctx.fillStyle = "green";
     ctx.fillText(`score:${frameCount} AWESOME!`, 100, 100);
-  } else if(frameCount >= 10000) {
+  } else if (frameCount >= 10000) {
     ctx.fillStyle = "red";
     ctx.fillText(`score:${frameCount} SO GENIOUS!`, 100, 100);
   } else {
     ctx.fillStyle = "black";
     ctx.fillText(`score:${frameCount}`, 100, 100);
   }
-}
+};
 
-const isCrash = ({ userX, userY }, { name, itemX, itemY } ) => {
-  if(name === "small_obstacle"){
+const isCrash = ({ userX, userY }, { name, itemX, itemY }) => {
+  if (name === "small_obstacle") {
     return userX + 120 >= itemX && itemX >= 80 && userY + 200 >= itemY
       ? true
       : false;
-  } else if(name === "big_obstacle"){
+  } else if (name === "big_obstacle") {
     return userX + 120 >= itemX && itemX >= 80 && userY + 200 >= itemY
       ? true
       : false;
   }
-}
+};
 
 const isAttack = (attackObj, big_obstacleObj) => {
   const attack = attackObj.itemX;
   const obstacle = big_obstacleObj.itemX;
 
-  return attack >= obstacle ? true : false; 
-}
-
+  return attack >= obstacle ? true : false;
+};
 
 let spaceCount = 0;
 
-const frameLoop = () => {  
-  ctx.clearRect(0, 0, 3000, 3000); 
+const frameLoop = () => {
+  ctx.clearRect(0, 0, 3000, 3000);
   setBlocks();
   getScore();
   setBigBlocks();
-  setUser(); 
+  setUser();
   setAttack();
   showLife();
-  
-  
+
   const user_coordinates = {
     userX: user.x,
-    userY: user.y
-  }
+    userY: user.y,
+  };
 
   const big_obstacle_coordinates = {
     name: "big_obstacle",
@@ -213,25 +203,24 @@ const frameLoop = () => {
   };
 
   if (smallBlocksList.length > 0) {
-    
     const small_obstacle_coordinates = {
       name: "small_obstacle",
       itemX: smallBlocksList[0].x,
       itemY: smallBlocksList[0].y,
     };
 
-    if(isCrash(user_coordinates, small_obstacle_coordinates)){
-      console.log(user.getLife())
-      if(user.getLife() === 0){
+    if (isCrash(user_coordinates, small_obstacle_coordinates)) {
+      console.log(user.getLife());
+      if (user.getLife() === 0) {
         cancelAnimationFrame(requestAnimationFrame(frameLoop));
         return;
       }
       user.setLife();
       smallBlocksList.shift();
-    } 
+    }
 
-    if(smallBlocksList.length > 0 && smallBlocksList[0].x <= 0) {
-       smallBlocksList.pop();
+    if (smallBlocksList.length > 0 && smallBlocksList[0].x <= 0) {
+      smallBlocksList.pop();
     }
   }
 
@@ -251,45 +240,40 @@ const frameLoop = () => {
     attackList.shift();
   }
 
-    
-  if(isCrash(user_coordinates, big_obstacle_coordinates)){
+  if (isCrash(user_coordinates, big_obstacle_coordinates)) {
     cancelAnimationFrame(requestAnimationFrame(frameLoop));
     return;
   }
 
-  if(bigBlocksList.length > 0 && bigBlocksList[0].hp <= 0){
-
+  if (bigBlocksList.length > 0 && bigBlocksList[0].hp <= 0) {
     bigBlocksList.shift();
   }
 
   if (user.y >= 600 && spaceCount == 2) {
-      spaceCount = 0;
+    spaceCount = 0;
   }
 
-  if(frameCount % 300 === 0){
+  if (frameCount % 300 === 0) {
     const blocks = new SmallBlock(1200, 700);
     smallBlocksList.push(blocks);
   }
 
-  if(frameCount % 1200 === 0) {
+  if (frameCount % 1200 === 0) {
     const blocks = new BigBlock(1200, 350, 280);
     bigBlocksList.push(blocks);
   }
 
   frameCount++;
-  requestAnimationFrame(frameLoop); 
+  requestAnimationFrame(frameLoop);
 };
 
-
-
- 
 //스페이스키
 document.addEventListener("keydown", (e) => {
   if (e.code === "Space") {
     e.preventDefault();
     if (!user.isJump && spaceCount < user.keyStack) {
-      user.isJump = true; 
-      spaceCount++; 
+      user.isJump = true;
+      spaceCount++;
     }
   }
 });
@@ -302,7 +286,6 @@ document.addEventListener("keydown", (e) => {
     console.log(attackList);
   }
 });
-
 
 canvas.addEventListener("click", (e) => {
   console.log(e.offsetX, e.offsetY);
