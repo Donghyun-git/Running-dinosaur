@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Running Dinosaur</title>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="wrap"> <!-- 배경 -->
@@ -19,15 +22,18 @@
                     <p class="description-title">How To Play</p>
                     <div class="description-content">
                         <p class="description-img"><img src="img/description-control.png" alt="control-key"></p>
-                        
+                        <p class="mt40">You can shoot fireball!! You should break the mushroom!!</p>
                     </div>
                     <div class="description-content">
                         <p class="description-img"><img src="img/description-spacebar.png" alt="spacebar"></p>
-
+                        <p class="mt30">Jump over the small mushroom!!</p>
                     </div>
                 </div>
                 <div class="intro-main-button">
-                    <button class="play-button">PLAY</button>
+
+                    <img src="./img/user.png" alt="캐릭터 이미지">
+                    <p>[ YongYong ]</p>
+                    <button class="play-button mt130">PLAY</button>
                 </div>
              </div>
         </div>
@@ -36,8 +42,18 @@
         <div id="game">
             <canvas class="canvas" width="1250" height="800"></canvas>
         </div>
+
+        <!--modal-->
+        <div id="modal">
+            <div class="modal-content">
+                <button class="modal-close"></button>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum, iusto rerum ad, veniam voluptatem nobis autem illo cupiditate voluptatum, dicta expedita aperiam fugiat iste voluptates. Natus, id. Inventore, vero dolorum?</p>
+            </div>
+        </div>
     </div>
 </body>
 <script src="./js/canvas.js"></script>
 <script src="./js/main.js"></script>
+<script src="./js/modal.js"></script>
 </html>
+
