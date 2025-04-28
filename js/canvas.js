@@ -9,7 +9,7 @@ class User {  //유저 클래스 정의
         this.isAttack = isAttack; // 컨트롤키 다운 여부.
         this.keyStack = keyStack; //스페이스바 키 몇번눌렀는지 카운트
     }
-}    //이게 캔버스 width랑 height를 정의해놓고 css로 건드려놔서 실제 좌표랑 달러. 그래서 아까 클릭이벤트로 좌표값 찍어본거야 ..ㅠㅠ
+} 
 
 class Fire extends User {
   constructor(x, y, isJump, isAttack, keyStack, fx, isConflict) {
