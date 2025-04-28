@@ -19,6 +19,7 @@ class User {
   }
 }
 
+
 class Fire extends User {
   constructor(x, y, isJump, keyStack, fx, isConflict) {
     super(x, y);
